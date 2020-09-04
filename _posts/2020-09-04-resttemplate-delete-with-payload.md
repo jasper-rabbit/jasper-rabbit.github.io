@@ -1,5 +1,5 @@
 ---
-title: RestTemplate에서 body를 가진 delete 요청 문제
+title: RestTemplate에서 body를 가진 delete 요청 문제 (Spring 3.2.x)
 author: Jasper Ra66it
 date: 2020-09-04 22:36:00 +0900
 categories: [Blogging,Spring]
