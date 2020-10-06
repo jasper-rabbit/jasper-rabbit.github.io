@@ -1,0 +1,83 @@
+---
+title: MyBatis가 setter/getter를 찾는 방법 
+author: Jasper Ra66it
+date: 2020-10-06 15:43:00 +0900
+categories: [Blogging,MyBatis]
+tags: [Java, MyBatis, Reflector.java]
+pin: false
+---
+
+[MyBatis](https://mybatis.org/mybatis-3/ko/index.html)를 사용하면서 보통 사용해오던 방식을 계속 따르게 된다. 경험을 통해서 애매하거나 문제가 생기겠지 생각되는 부분은 피해가면서 사용하게 되는데, 그러다보니 해보지 않은 부분에 대해서는 잘 모르고 넘어가는 경우가 많다. 최근 다른 이유로 테스트 코드를 작성하다가 몰랐던 것들을 알게 되어서 정리해본다.
+
+### DTO에 getter와 setter가 없어도 된다
+
+DTO를 사용해서 데이터를 가져올 때 리플렉션(reflection)을 이용한다. 그래서 매개변수가 없는 기본생성자가 있어야 한다는 정도만 알고 있었다. 그리고 자바빈 규약을 따라서 setter와 getter를 이용하는 걸로 알고있었는데, 테스트 중 private 필드만 있는 클래스를 이용해도 정상적으로 조회가 되었다. 원인을 찾다보니 [Reflector.java](https://mybatis.org/mybatis-3/zh/jacoco/org.apache.ibatis.reflection/Reflector.java.html) 이 클래스를 만나게 되는데, 쿼리 결과를 가져오기 위한 resultType의 클래스 정보를 리플렉션을 이용해서 가지고 있는다.
+
+> This class represents a cached set of class definition information that allows for easy mapping between property names and getter/setter methods.
+
+`Reflector` 클래스가 resultType 의 클래스에 대한 필드정보와 getter/setter의 매핑 정보를 만들어 두고 이를 통해서 바인딩 시 해당 필드를 찾는다. 
+
+우선 `Reflector` 생성자가 초기화되는 과정을 보면 먼저 대상 클래스의 메서드들을 대상으로 getter, setter 메서드 인지에 따라서 getMethods, setMethods 라는 `Map<String, Invoker>` 타입의 맵에 저장해둔다. 이때 키값은 해당 메서드명을 이용해서 필드명을 추출한다. 즉, 만약 실제 변수는 없고 getter 또는 setter 메서드만 있더라도 그 메서드 명을 이용해서 필드명을 추출하여 키값으로 사용한다.
+
+```java
+private void addGetMethods(Class<?> cls) {
+    ...
+    for (Method method : methods) {
+        String name = method.getName();
+        if (name.startsWith("get") && name.length() > 3) {
+            if (method.getParameterTypes().length == 0) {
+                name = PropertyNamer.methodToProperty(name);
+                addMethodConflict(conflictingGetters, name, method);
+            }
+        } else if (name.startsWith("is") && name.length() > 2) {
+            if (method.getParameterTypes().length == 0) {
+                name = PropertyNamer.methodToProperty(name);
+                addMethodConflict(conflictingGetters, name, method);
+            }
+        }
+    }
+    ...
+}
+```
+
+위처럼 메서드들을 대상으로 먼저 정보를 취합하고 다음으로 필드에 대해서 처리 한다. 이때 각 필드명으로 먼저 만들어 두었던 getMethods, setMethods 에서 검색을 해서 해당 필드에 대한 getter, setter 가 없다면 새로 만들어서 각 맵에 추가한다. 그래서 클래스에 명시적으로 getter와 setter를 만들어 주지 않아도 문제가 되지 않는다. 그런데 getter, setter가 없는 클래스를 어디다 쓰랴;
+
+### 필드의 대소문자가 무시된다
+
+예를 들어, 쿼리의 컬럼명이 myCol 이고 클래스의 필드명이 mycol 인 경우 어떻게 될까. 정상적으로 값이 들어온다. 보통 쿼리의 컬럼명과 필드명을 동일하게 맞춰서 사용하다보니 이렇게 사용한 적이 없었는데, 문제 없이 되는걸 보고 좀 의아했다. 그래서 클래스에 mycol 과 myCol 두개의 필드를 두고 테스트를 해보니 myCol에 값이 들어왔다. 그리고 필드 선언시 mycol 을 myCol 뒤에 두게되면 mycol 에 값이 들어온다. 좀 엉뚱해 보이긴 하는데, 그렇게 되어 있었다.
+
+위 Reflector 생성자에서 초기화서 만들어진 getMethods, setMethods를 이용해서 필드명을 맵에 저장해 두는데, 이때 키값이 되는 값이 필드명을 대문자로 변경한 문자열이 된다.
+
+```java
+private Map<String, String> caseInsensitivePropertyMap = new HashMap<String, String>();
+
+public Reflector(Class<?> clazz) {
+    type = clazz;
+    addDefaultConstructor(clazz);
+    addGetMethods(clazz);
+    addSetMethods(clazz);
+    addFields(clazz);
+    readablePropertyNames = getMethods.keySet().toArray(new String[getMethods.keySet().size()]);
+    writeablePropertyNames = setMethods.keySet().toArray(new String[setMethods.keySet().size()]);
+    for (String propName : readablePropertyNames) {
+        caseInsensitivePropertyMap.put(propName.toUpperCase(Locale.ENGLISH), propName);
+    }
+    for (String propName : writeablePropertyNames) {
+        caseInsensitivePropertyMap.put(propName.toUpperCase(Locale.ENGLISH), propName);
+    }
+}
+```
+
+```java
+public String findPropertyName(String name) {
+    return caseInsensitivePropertyMap.get(name.toUpperCase(Locale.ENGLISH));
+}
+```
+
+이렇다 보니 만약 필드명이 동일하면서 대소문자만 다른 경우는 키값이 동일하게 되어서 덮어써진다. 이렇다 보니 필드나 메서드의 선언 순서에 따라 해당 맵에 남게될 실제 필드가 달라질 수 있다는 점이다.
+
+### 마무리
+
+사실 이런 원인으로 문제가 생긴다면 필드명을 애매하게 만든 개발자의 문제가 클 것이다. 가능하면 확실히 구분되는 유니크한 이름을 사용하는게 좋은 습관일 것 같다. 다만 이런 내용에 대해 모르고 관련 문제가 발생하면 왜 이렇게 되는지 몰라 시간을 허비할 수 있을 듯하다.
+
+사실 처음 찾아보던 이슈는 자바빈 메서드 네이밍에 대한 것이었는데. 다음은 이 내용을 써봐야겠다.
