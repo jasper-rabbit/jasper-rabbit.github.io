@@ -1,0 +1,4 @@
+I"¹<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nc">Caused</span> <span class="nl">by:</span> <span class="n">com</span><span class="o">.</span><span class="na">fasterxml</span><span class="o">.</span><span class="na">jackson</span><span class="o">.</span><span class="na">databind</span><span class="o">.</span><span class="na">exc</span><span class="o">.</span><span class="na">UnrecognizedPropertyException</span><span class="o">:</span> <span class="nc">Unrecognized</span> <span class="n">field</span> <span class="s">"$xxxxx"</span><span class="o">,</span> <span class="n">not</span> <span class="n">marked</span> <span class="n">as</span> <span class="n">ignorable</span> <span class="o">...</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+:ET

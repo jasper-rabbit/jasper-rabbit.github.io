@@ -1,0 +1,42 @@
+I"�<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="nc">Caused</span> <span class="nl">by:</span> <span class="n">com</span><span class="o">.</span><span class="na">fasterxml</span><span class="o">.</span><span class="na">jackson</span><span class="o">.</span><span class="na">databind</span><span class="o">.</span><span class="na">exc</span><span class="o">.</span><span class="na">UnrecognizedPropertyException</span><span class="o">:</span> <span class="nc">Unrecognized</span> <span class="n">field</span> <span class="s">"$xxxxx"</span><span class="o">,</span> <span class="n">not</span> <span class="n">marked</span> <span class="n">as</span> <span class="n">ignorable</span> <span class="o">...</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>연동하던 외부 서비스 api 의 json 응답값에 새로운 필드가 추가된 모양이다. DTO에 정의된 필드의 값만 바인딩 되도록 해뒀어야 하는데, 또 까먹은 모양이다. (이게 ObjectMapper의 디폴트 값이면 안되는 것인가…)</p>
+
+<p>방법은 두가지가 있는데, 간단하게는 DTO에 어노테이션을 붙이기만 하면 된다.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="nd">@JsonIgnoreProperties</span><span class="o">(</span><span class="n">ignoreUnknown</span> <span class="o">=</span> <span class="kc">true</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyDTO</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="nc">String</span> <span class="n">field1</span><span class="o">;</span>
+    <span class="o">....</span>
+<span class="o">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>다른 한 가지는 사용하는 ObjectMapper에 설정을 하는 것이다.</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="nc">ObjectMapper</span> <span class="n">objectMapper</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ObjectMapper</span><span class="o">();</span>
+<span class="n">objectMapper</span><span class="o">.</span><span class="na">configure</span><span class="o">(</span><span class="nc">DeserializationFeature</span><span class="o">.</span><span class="na">FAIL_ON_UNKNOWN_PROPERTIES</span><span class="o">,</span> <span class="kc">false</span><span class="o">);</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>참고로 RestTemplate을 사용하면서 이 설정을 해주고 싶다면, 위와 같이 정의한 ObjectMapper와 함께 MappingJackson2HttpMessageConverter 를 만들어서 RestTemplate에 설정 해주면 된다.</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="nc">RestTemplate</span> <span class="n">restTemplate</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">RestTemplate</span><span class="o">();</span>    
+<span class="nc">MappingJackson2HttpMessageConverter</span> <span class="n">messageConverter</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">MappingJackson2HttpMessageConverter</span><span class="o">();</span>
+<span class="n">messageConverter</span><span class="o">.</span><span class="na">setObjectMapper</span><span class="o">(</span><span class="n">objectMapper</span><span class="o">);</span>
+<span class="n">restTemplate</span><span class="o">.</span><span class="na">getMessageConverters</span><span class="o">().</span><span class="na">add</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="n">messageConverter</span><span class="o">);</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><a href="https://github.com/FasterXML/jackson-annotations/wiki/Jackson-Annotations#property-inclusion">Jackson Annotations - [Jackson Docs]</a></p>
+
+<p><a href="https://www.baeldung.com/jackson-object-mapper-tutorial#1-configuring-serialization-or-deserialization-feature">4.1. Configuring Serialization or Deserialization Feature - Intro to the Jackson ObjectMapper | Baeldung</a></p>
+:ET

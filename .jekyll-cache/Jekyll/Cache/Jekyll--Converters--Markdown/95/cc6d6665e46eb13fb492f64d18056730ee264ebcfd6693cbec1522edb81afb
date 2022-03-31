@@ -1,0 +1,2 @@
+I"[<p>이메일 발송을 위해 이용하는 외부 서비스 연동을 하던 중, <code class="language-plaintext highlighter-rouge">DELETE</code> 메서드를 이용하는 API가 있었다. 그런데 해당 api로 넘기는 파라미터는 request의 body를 이용하라고 하는 것이 었다. DELETE 메서드를 이용 할 때 복잡한 값들을 넘겨본 적이 많지 않았던 것 같은데, 내 기억으로는 DELETE 로는 body 값을 넘길 <strong>수 없다고</strong> 알고 있었다. 거기다 <code class="language-plaintext highlighter-rouge">RestTemplate</code>를 이용해서 테스트를 해보니 역시나 안되는 것이었다. (400 Bad Request는 아니었고, 해당 서비스에서 자체 정의한 응답 코드긴 했다.) 그래서 다시 확인해 보니 요청시 설정한 body 값이 넘어가지 않고 있었다.</p>
+:ET
