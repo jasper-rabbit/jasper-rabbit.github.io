@@ -1,0 +1,205 @@
+I"�<div id="archives" class="pl-xl-2">
+
+  
+  
+  
+    
+    
+  <span class="lead">2022</span>
+  <ul class="list-unstyled">
+  
+    <li>
+      <div>
+        
+        
+        <span class="date day">25</span>
+        <span class="date month small text-muted">Apr</span>
+        <a href="/posts/software-design-for-flexibility/">[책리뷰] 유연한 소프트웨어를 만드는 설계원칙</a>
+      </div>
+    </li>
+  
+
+  
+  
+  
+    <li>
+      <div>
+        
+        
+        <span class="date day">31</span>
+        <span class="date month small text-muted">Mar</span>
+        <a href="/posts/software-architecture-101/">[책리뷰] 소프트웨어 아키텍처 101</a>
+      </div>
+    </li>
+  
+
+  
+  
+  
+    <li>
+      <div>
+        
+        
+        <span class="date day">23</span>
+        <span class="date month small text-muted">Feb</span>
+        <a href="/posts/sql-cookbook/">[책리뷰] SQL Cookbook</a>
+      </div>
+    </li>
+  
+  </ul>
+  <span class="lead">2021</span>
+  <ul class="list-unstyled">
+    
+    
+  
+
+  
+  
+  
+    <li>
+      <div>
+        
+        
+        <span class="date day">29</span>
+        <span class="date month small text-muted">Jan</span>
+        <a href="/posts/beanstalk-extending-linux-platform/">AWS Elastic Beanstalk에서 nginx 설정</a>
+      </div>
+    </li>
+  
+
+  
+  
+  
+    <li>
+      <div>
+        
+        
+        <span class="date day">06</span>
+        <span class="date month small text-muted">Jan</span>
+        <a href="/posts/java-by-comparison-book-review/">[책리뷰] 자바 코딩의 기술</a>
+      </div>
+    </li>
+  
+  </ul>
+  <span class="lead">2020</span>
+  <ul class="list-unstyled">
+    
+    
+  
+
+  
+  
+  
+    <li>
+      <div>
+        
+        
+        <span class="date day">15</span>
+        <span class="date month small text-muted">Nov</span>
+        <a href="/posts/blar-blar/">잡담 1</a>
+      </div>
+    </li>
+  
+
+  
+  
+  
+    <li>
+      <div>
+        
+        
+        <span class="date day">15</span>
+        <span class="date month small text-muted">Nov</span>
+        <a href="/posts/cryptography-for-beginners/">Cryptography for Beginners 정리</a>
+      </div>
+    </li>
+  
+
+  
+  
+  
+    <li>
+      <div>
+        
+        
+        <span class="date day">06</span>
+        <span class="date month small text-muted">Oct</span>
+        <a href="/posts/mybatis-refector/">MyBatis가 setter/getter를 찾는 방법</a>
+      </div>
+    </li>
+  
+
+  
+  
+  
+    <li>
+      <div>
+        
+        
+        <span class="date day">05</span>
+        <span class="date month small text-muted">Oct</span>
+        <a href="/posts/system-call-in-os/">System call 이란?</a>
+      </div>
+    </li>
+  
+
+  
+  
+  
+    <li>
+      <div>
+        
+        
+        <span class="date day">04</span>
+        <span class="date month small text-muted">Oct</span>
+        <a href="/posts/spring-security-architecture-review/">Spring Security Architecture 내용정리</a>
+      </div>
+    </li>
+  
+
+  
+  
+  
+    <li>
+      <div>
+        
+        
+        <span class="date day">27</span>
+        <span class="date month small text-muted">Sep</span>
+        <a href="/posts/json-unrecognized-field-error/">Jackson UnrecognizedPropertyException - Unrecognized field</a>
+      </div>
+    </li>
+  
+
+  
+  
+  
+    <li>
+      <div>
+        
+        
+        <span class="date day">04</span>
+        <span class="date month small text-muted">Sep</span>
+        <a href="/posts/resttemplate-delete-with-payload/">RestTemplate에서 body를 가진 delete 요청 문제 (Spring 3.2.x)</a>
+      </div>
+    </li>
+  
+
+  
+  
+  
+    <li>
+      <div>
+        
+        
+        <span class="date day">04</span>
+        <span class="date month small text-muted">Sep</span>
+        <a href="/posts/getting-started/">블로거 1일차!</a>
+      </div>
+    </li>
+  
+  </ul>
+  
+
+</div>
+:ET

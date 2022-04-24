@@ -1,4 +1,4 @@
-I"�<div id="archives" class="pl-xl-2">
+I"�<div id="archives" class="pl-xl-2">
 
   
   
@@ -7,6 +7,20 @@
     
   <span class="lead">2022</span>
   <ul class="list-unstyled">
+  
+    <li>
+      <div>
+        
+        
+        <span class="date day">31</span>
+        <span class="date month small text-muted">Mar</span>
+        <a href="/posts/software-design-for-flexibility/">[책리뷰] 소프트웨어 아키텍처 101</a>
+      </div>
+    </li>
+  
+
+  
+  
   
     <li>
       <div>
