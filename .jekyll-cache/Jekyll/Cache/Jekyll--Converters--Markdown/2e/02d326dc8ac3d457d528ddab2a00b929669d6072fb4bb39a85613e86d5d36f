@@ -1,4 +1,5 @@
-I"�<div id="archives" class="pl-xl-2">
+I"
+<div id="archives" class="pl-xl-2">
 
   
   
@@ -12,9 +13,23 @@
       <div>
         
         
-        <span class="date day">31</span>
-        <span class="date month small text-muted">Mar</span>
-        <a href="/posts/software-design-for-flexibility/">[책리뷰] 소프트웨어 아키텍처 101</a>
+        <span class="date day">30</span>
+        <span class="date month small text-muted">May</span>
+        <a href="/posts/guide-to-graph-data/">[책리뷰] 실무자를 위한 그래프 데이터 활용법</a>
+      </div>
+    </li>
+  
+
+  
+  
+  
+    <li>
+      <div>
+        
+        
+        <span class="date day">25</span>
+        <span class="date month small text-muted">Apr</span>
+        <a href="/posts/software-design-for-flexibility/">[책리뷰] 유연한 소프트웨어를 만드는 설계원칙</a>
       </div>
     </li>
   
